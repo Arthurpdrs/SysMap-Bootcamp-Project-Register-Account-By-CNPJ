@@ -14,7 +14,8 @@ public class SearchCompanyDTO {
     public String situacao;
     
     public SearchCompanyDTO(Map<String, Object> data) {
-        this.cnpj = (String)data.get('cnpj');
+        // Normaliza o CNPJ, removendo caracteres não numéricos, para garantir consistência no formato do CNPJ em toda a aplicação.
+        this.cnpj = SearchCompanyService.stripNonDigits((String)data.get('cnpj'));
         this.nome = (String)data.get('nome');
         this.logradouro = (String)data.get('logradouro');
         this.numero = (String)data.get('numero');

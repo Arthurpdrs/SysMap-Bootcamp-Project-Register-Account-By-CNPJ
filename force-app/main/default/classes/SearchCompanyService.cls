@@ -66,8 +66,8 @@ public class SearchCompanyService {
     }
 
     // Método para normalizar o cnpj, removendo caracteres não numéricos. 
-    @TestVisible
-    private static String stripNonDigits(String cnpj) {
+    
+    public static String stripNonDigits(String cnpj) {
         if (cnpj == null || cnpj == '') return null;
         return cnpj.replaceAll('[^0-9]', '');
     }

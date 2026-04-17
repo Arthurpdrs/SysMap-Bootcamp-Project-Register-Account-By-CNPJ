@@ -48,7 +48,7 @@ private with sharing class SearchCompanyServiceTest {
             SearchCompanyService.getCompanyByCnpj(cnpj);
             System.assert(false, 'Expected an exception for callout error');
         } catch (AuraHandledException e) {
-            System.assert(e.getMessage().contains('Erro ao consultar CNPJ em ReceitaWS'));
+            System.assert(e.getMessage().contains('CNPJ não encontrado: Internal Server Error'));
         }
     }
     

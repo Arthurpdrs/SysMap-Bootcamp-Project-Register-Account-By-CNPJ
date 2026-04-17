@@ -22,6 +22,7 @@ public class SearchCompanyAction {
         @AuraEnabled @InvocableVariable public String telefone;
         @AuraEnabled @InvocableVariable public String situacao;
         @AuraEnabled @InvocableVariable public String errorMessage;
+        @AuraEnabled @InvocableVariable public Boolean accountAlreadyExists;
     }
 
     // Método invocável que será chamado pelo componente Aura. 
@@ -32,6 +33,14 @@ public class SearchCompanyAction {
         List<Response> results = new List<Response>();
         
         if (requests == null) return results;
+
+        if(accountAlreadyExists(requests[0].cnpj)){
+            Response r = new Response();
+            r.accountAlreadyExists = true;
+            r.cnpj = SearchCompanyService.stripNonDigits(requests[0].cnpj);
+            results.add(r);
+            return results;
+        }
         
         // Itera sobre as requisições recebidas, chama o serviço de busca de empresa para cada CNPJ e popula a resposta.
         for (Request req : requests) {
@@ -49,12 +58,19 @@ public class SearchCompanyAction {
                 r.cep = dto.cep;
                 r.telefone = dto.telefone;
                 r.situacao = dto.situacao;
+
             } catch (Exception e) {
                 r.errorMessage = e.getMessage();
             }
             results.add(r);
         }
         return results;
+    }
+
+    private static Boolean accountAlreadyExists(String cnpj) {
+        cnpj = SearchCompanyService.stripNonDigits(cnpj);
+        List<Account> accounts = [SELECT Id FROM Account WHERE CNPJ__c = :cnpj LIMIT 1];
+        return !accounts.isEmpty();
     }
 
 }
