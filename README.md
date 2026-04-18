@@ -28,7 +28,7 @@ O Flow é do tipo **Screen Flow**, acionado através de uma **Quick Action** dis
 
 ### Diagrama
 
-![Diagrama do Flow](docs/images/flow-diagram.png)
+![Diagrama do Flow](docs/images/flow-diagram.PNG)
 
 ### Principais Elementos
 
