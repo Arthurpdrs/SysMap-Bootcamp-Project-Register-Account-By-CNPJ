@@ -49,7 +49,7 @@ public class SearchCompanyAction {
                 SearchCompanyDTO dto = SearchCompanyService.getCompanyByCnpj(req.cnpj);
                 r.cnpj = dto.cnpj;
                 r.nome = dto.nome;
-                r.billingStreet = dto.billingStreet;
+                r.billingStreet = dto.billingStreet; 
                 r.numero = dto.numero;
                 r.complemento = dto.complemento;
                 r.bairro = dto.bairro;
@@ -68,8 +68,11 @@ public class SearchCompanyAction {
     }
 
     private static Boolean accountAlreadyExists(String cnpj) {
-        cnpj = SearchCompanyService.stripNonDigits(cnpj);
-        List<Account> accounts = [SELECT Id FROM Account WHERE CNPJ__c = :cnpj LIMIT 1];
+        String cnpjFormatted = SearchCompanyService.stripNonDigits(cnpj);
+        if(String.isBlank(cnpjFormatted) || cnpjFormatted.length() != 14){
+            return false;
+        }
+        List<Account> accounts = [SELECT Id FROM Account WHERE CNPJ__c = :cnpjFormatted LIMIT 1];
         return !accounts.isEmpty();
     }
 
